@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="description" content="" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <!-- 清除缓存 S -->
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="Wed, 26 Feb 1997 08:21:57 GMT">
+    <meta http-equiv="expires" content="0">
+    <!-- 引入样式 -->
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <!-- 清除缓存 E -->
+    <title>定位数据</title>
+  </head>
+  <style>
+    html,
+    body,
+    #app {
+      height: 100%;
+      -webkit-overflow-scrolling: touch;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    input,
+    select,
+    textarea {
+      font-size: 100%;
+      outline: none;
+      border: none;
+    }
+
+    fieldset,
+    img {
+      border: 0;
+      outline: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      outline: none;
+      border: none;
+    }
+
+    img[src=''],
+    img:not([src]) {
+      opacity: 0;
+    }
+
+    input[type='search'] {
+      -webkit-appearance: none;
+    }
+
+    input::-webkit-search-decoration,
+    input::-webkit-search-cancel-button {
+      display: none;
+    }
+
+    p {
+      margin: 0;
+      padding: 0;
+    }
+
+  </style>
+  <body>
+    <noscript>
+      <strong
+        >We're sorry but template doesn't work properly without JavaScript enabled. Please enable it
+        to continue.</strong
+      >
+    </noscript>
+    <div id="app">
+      <el-form ref="formRef" :model="form" label-width="80px">
+        <el-form-item label="因素：" prop="name">
+          <el-select v-model="form.name" filterable placeholder="请选择表名">
+            <el-option v-for="item in formConfig" :label="item.name" :key="item.key" :value="item.key"></el-option>
+          </el-select>
+        </el-form-item>
+        <el-form-item label="小时：" prop="x">
+          <el-input v-model="form.x"></el-input>
+        </el-form-item>
+        <el-form-item label="天数：" prop="y">
+          <el-input v-model="form.y"></el-input>
+        </el-form-item>
+        <el-form-item>
+          <el-button type="primary" @click="onSubmit">立即查询</el-button>
+          <el-button @click="onReset('formRef')">重置</el-button>
+        </el-form-item>
+      </el-form>
+      <el-form label-width="80px">
+        <el-form-item label="结果：" prop="name">
+          <p>{{result}}</p>
+        </el-form-item>
+      </el-form>
+      <div>
+        <el-table
+          :data="tableData"
+          style="width: 100%"
+        >
+          <el-table-column
+            v-for="(value, key) in tds"
+            :prop="`${value == 'day' ? value : ('num' + value)}`"
+            :label="String(value)"
+            :key="String(value)"
+            align="center"
+          >
+          </el-table-column>
+        </el-table>
+      </div>
+    </div>
+  </body>
+  <!-- 先引入 Vue -->
+  <script src="https://unpkg.com/vue@2.7.13/dist/vue.js"></script>
+  <!-- 引入组件库 -->
+  <script src="https://unpkg.com/element-ui/lib/index.js"></script>
+  <script type="module">
+    // import { formConfig } from "./formConfig.js";
+    new Vue({
+      el: '#app',
+      data: function() {
+        return { 
+          form: {
+            name: '',
+            x: '',
+            y: ''
+          }
+        }
+      },
+      computed: {
+        formConfig: function () {
+          // return formConfig
+          return [{
+            key: 'form1',
+            name: '胎龄≥40周且无高胆红素血症神经毒性危险因素',
+            desc: '出生96小时后的阈值为21.8 mg/dL',
+            data: [
+              {
+                day: 0,
+                num0: '',
+                num1: 8.9,
+                num2: 9.1,
+                num3: 9.3,
+                num4: 9.6,
+                num5: 9.8,
+                num6: 10.0,
+                num7: 10.2,
+                num8: 10.4,
+                num9: 10.5,
+                num10: 10.7,
+                num11: 10.9,
+                num12: 11.1,
+                num13: 11.3,
+                num14: 11.5,
+                num15: 11.7,
+                num16: 11.9,
+                num17: 12.1,
+                num18: 12.2,
+                num19: 12.4,
+                num20: 12.6,
+                num21: 12.8,
+                num22: 13.0,
+                num23: 13.1
+              },{
+                day: 1,
+                num0: 13.3,
+                num1: 13.5,
+                num2: 13.6,
+                num3: 13.8,
+                num4: 14.0,
+                num5: 14.1,
+                num6: 14.3,
+                num7: 14.5,
+                num8: 14.6,
+                num9: 14.8,
+                num10: 15.0,
+                num11: 15.1,
+                num12: 15.3,
+                num13: 15.4,
+                num14: 15.6,
+                num15: 15.7,
+                num16: 15.9,
+                num17: 16.0,
+                num18: 16.2,
+                num19: 16.3,
+                num20: 16.4,
+                num21: 16.6,
+                num22: 16.7,
+                num23: 16.9
+              }, {
+                day: 2,
+                num0: 17.0,
+                num1: 17.1,
+                num2: 17.3,
+                num3: 17.4,
+                num4: 17.5,
+                num5: 17.7,
+                num6: 17.8,
+                num7: 17.9,
+                num8: 18.0,
+                num9: 18.2,
+                num10: 18.3,
+                num11: 18.4,
+                num12: 18.5,
+                num13: 18.6,
+                num14: 18.8,
+                num15: 18.9,
+                num16: 19.0,
+                num17: 19.1,
+                num18: 19.2,
+                num19: 19.3,
+                num20: 19.4,
+                num21: 19.6,
+                num22: 19.7,
+                num23: 19.7
+              },{
+                day: 3,
+                num0: 19.8,
+                num1: 19.9,
+                num2: 20.0,
+                num3: 20.1,
+                num4: 20.2,
+                num5: 20.3,
+                num6: 20.4,
+                num7: 20.5,
+                num8: 20.6,
+                num9: 20.7,
+                num10: 20.7,
+                num11: 20.8,
+                num12: 20.9,
+                num13: 21.0,
+                num14: 21.1,
+                num15: 21.1,
+                num16: 21.2,
+                num17: 21.3,
+                num18: 21.4,
+                num19: 21.4,
+                num20: 21.5,
+                num21: 21.6,
+                num22: 21.6,
+                num23: 21.7
+              },
+              {
+                day: 4,
+                num0: 21.8,
+                num1: 21.8,
+                num2: 21.8,
+                num3: 21.8,
+                num4: 21.8,
+                num5: 21.8,
+                num6: 21.8,
+                num7: 21.8,
+                num8: 21.8,
+                num9: 21.8,
+                num10: 21.8,
+                num11: 21.8,
+                num12: 21.8,
+                num13: 21.8,
+                num14: 21.8,
+                num15: 21.8,
+                num16: 21.8,
+                num17: 21.8,
+                num18: 21.8,
+                num19: 21.8,
+                num20: 21.8,
+                num21: 21.8,
+                num22: 21.8,
+                num23: 21.8
+              }
+            ]
+          }]
+        },
+        tds: function () {
+          return ['day', ...Array.from({ length: 24 }, (v, k) => k)]
+        },
+        result: function () {
+          if (this.form.x == '' || this.form.y == '') {
+            return ''
+          }
+          console.log(`num${Number(this.form.x) + 1}`, this.tableData[this.form.y])
+          return this.tableData[this.form.y] && this.tableData[this.form.y][`num${this.form.x}`] || ''
+        },
+        tableData: function () {
+          if (!this.form.name) {
+            return []
+          }
+
+          return this.formConfig.filter(item => item.key == this.form.name)[0].data
+        },
+      },
+      methods: {
+        onSubmit: function() {
+          
+        },
+        onReset: function(formName) {
+          this.$refs[formName].resetFields();
+        }
+      }
+    })
+  </script>
+</html>
